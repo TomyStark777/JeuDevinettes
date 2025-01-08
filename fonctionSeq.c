@@ -9,83 +9,35 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <locale.h>
+#include "fonctionSeq.h"
 
-
-//Fonction boléenne qui renvoie true si le pseudo existe déjà et false sinon
-bool verifiePseudo(char pseudo,FILE* file){
-    file = fopen("score.txt","r");
+// Fonction booléenne qui renvoie true si le pseudo existe déjà et false sinon
+bool verifiePseudo(const char* pseudo, FILE* file) {
+    file = fopen("score.txt", "r");
+    if (file == NULL) {
+        perror("Erreur d'ouverture du fichier");
+        return false;
+    }
     char ligne[300];
     while (fgets(ligne, sizeof(ligne), file)) {
         printf("Ligne lue: %s", ligne);
-        if (ligne == pseudo)
-        {
+        // Utilisation de strcmp pour comparer les chaînes de caractères
+        if (strcmp(ligne, pseudo) == 0) {
+            fclose(file);
             return true;
         }
-
     }
     fclose(file);
     return false;
 }
 
-
-void archivePseudo(char pseudo, FILE* file){
-    file = fopen("score.txt","a");
-    fprintf("%s\n",pseudo);
+void archivePseudo(const char* pseudo, FILE* file) {
+    file = fopen("score.txt", "a");
+    if (file == NULL) {
+        perror("Erreur d'ouverture du fichier");
+        return;
+    }
+    fprintf(file, "%s\n", pseudo); // Correction de fprintf pour inclure file
     fclose(file);
-    printf("%s, ton pseudo viens d'être enregistré avec succès !\n");
+    printf("%s, ton pseudo vient d'\250tre enregistré avec succès !\n", pseudo);
 }
-
-
-//Cette fonction contiendra tout le jeu propement dit avec les appels
-//des différentes fonctions définies plus haut
-void lancerJeu(){
-    setlocale(LC_CTYPE,"");//pour l'encodage en UTF-8
-    int choix,cpt = 0,nbreLu,nbreRandom;
-    char pseudo[100];
-    bool pseudoExiste;
-    FILE* file = fopen("score.txt","a");
-    fclose(file);
-
-    afficheRegles();
-    proposeIntervalle();
-    printf("Votre choix : ");
-    scanf("%d",&choix);
-    while (choix<0 || choix>3)
-    {
-        printf("Entrée Invalide - Réessayer : "); //Controle de choix
-        scanf("%d",&choix);
-    }
-
-    //En fonction du choix, on envoie un intervalle différent à la fonction getRandomInt
-    switch (choix){
-    case 1:
-        nbreRandom = getRandomInt(0,50);
-        break;
-    case 2:
-        nbreRandom = getRandomInt(0,100);
-        break;
-    case 3:
-        nbreRandom = getRandomInt(0,200);
-        break;
-    }
-    printf("À vous de jouer : ");
-    scanf("%d",&nbreLu);
-    while (nbreLu != nbreRandom){
-        messageOrientation(nbreLu, nbreRandom);
-        scanf("%d",&nbreLu);
-        cpt++;
-    }
-    messageFelicitation(cpt);
-    printf("Entrez un pseudo : ");
-    scanf("%s",pseudo);
-    pseudoExiste = verifiePseudo(pseudo,file);
-    if (pseudoExiste) {
-        printf("Ce pseudo est déjà enregistré dans score.txt");
-    }
-    else {
-        archivePseudo(pseudo,file);
-    }
-    printf("Fin du Programme....");
-
-}
-

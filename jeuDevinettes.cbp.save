@@ -31,13 +31,17 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="fonctionJeu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="fonctionJeu.h" />
+		<Unit filename="fonctionSeq.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="fonctionSeq.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="mesFonctions.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="mesFonctions.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

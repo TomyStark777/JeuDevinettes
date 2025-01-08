@@ -18,7 +18,8 @@
 #include <locale.h>
 #include <stdbool.h>
 #include <time.h>
-#include "mesFonctions.h"
+#include "fonctionJeu.h"
+#include "fonctionSeq.h"
 
 int main(){
     setlocale(LC_CTYPE,"");
@@ -26,6 +27,7 @@ int main(){
     lancerJeu();
     return 0;
 }
+
 
 
 
